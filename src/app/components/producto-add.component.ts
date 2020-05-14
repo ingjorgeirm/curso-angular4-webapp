@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { ProductoService } from '../services/producto.service';
 import  { Producto } from '../models/producto';
+import { GLOBAL } from  '../services/global';
 
 @Component({
 	selector: 'producto-add',
@@ -13,6 +14,8 @@ import  { Producto } from '../models/producto';
 export class ProductoAddComponent {
 	public titulo: string;
 	public producto: Producto;
+	public filesToUpload;
+	public resultUpload;
 
 	constructor(
 		private _productoService: ProductoService,
@@ -29,20 +32,45 @@ export class ProductoAddComponent {
 
 	onSubmit(){
 		console.log(this.producto);
-		this._productoService.addProducto(this.producto).subscribe(
-			response=>{
-				console.log(response);
-				if(response['code'] == 200){
-					this._router.navigate(['/productos']);
-				}else{
-					console.log(response);
-				}
 
-			},
-			error =>{
-				console.log(<any>error);
+		if(this.filesToUpload){
+			console.log('subida con ficheros');
+			this._productoService.makeFileRequest(GLOBAL.url+'upload-file', [], this.filesToUpload).then(
+				(result) => {
+					this.resultUpload =result;
+					console.log("resultado"+ result);
+					console.log("nombre_imagen" + this.resultUpload.filename);
+					this.resultUpload =result;
+					this.producto.imagen = this.resultUpload.filename;
+					this.saveProducto();
+
+			}, (error) =>{
+				console.log(error);
+			});
+		}else{
+			console.log('subida sin ficheros');
+				this.saveProducto();	
 			}
-			)
-	}
 
-}
+		}
+		
+saveProducto(){
+			this._productoService.addProducto(this.producto).subscribe(
+				response => {
+					if(response.code == 200){
+						this._router.navigate(['/productos']);
+					}else{
+						console.log(response);
+					}
+				},
+				error => {
+					console.log(<any>error);
+				}
+			);
+	}
+	
+	fileChangeEvent(fileInput: any){
+		this.filesToUpload = <Array<File>>fileInput.target.files;
+		console.log(this.filesToUpload);
+	}
+} 

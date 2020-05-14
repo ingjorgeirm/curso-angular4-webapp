@@ -9,6 +9,8 @@ import { ProductoListComponent } from './components/productos-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductoAddComponent } from './components/producto-add.component';
 import { FormsModule } from '@angular/forms';
+import { ProductoDetailComponent } from './components/producto-detail.component';
+import { ProductoEditComponent } from './components/producto-edit.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { FormsModule } from '@angular/forms';
     HomeComponent,
     ErrorComponent,
     ProductoListComponent,
-    ProductoAddComponent
+    ProductoAddComponent,
+    ProductoDetailComponent,
+    ProductoEditComponent
   ],
   imports: [
     BrowserModule,

@@ -21,10 +21,17 @@
 	<span *ngIf="!precio.valid && precio.touched" class="badge badge-danger">El precio no es correcto</span>
 </label>
 		<br>
-	<input type="text" #precio="ngModel" name="precio" [(ngModel)]="producto.precio"class="form-Control"required pattern="[0-9]+" /></p>
-	<p><label>Imagen</label>
+	<input type="text" #precio="ngModel" name="precio" [(ngModel)]="producto.precio"class="form-Control"required pattern="[0-9]+" />
+	</p>
+	<br>
+	
+		<label>Imagen</label>
 		<br>
-	<input type="file" class="form-Control"/></p>
+		<div *ngIf = "is_edit">
+		<img src="http://localhost/curso-angular4-backend/uploads/{{producto.imagen}}" width="60"/>
+	</div>
+	<input type="file" class="form-Control" (change)="fileChangeEvent($event)"/>
+	<br>
 	<br>
 	<input type="submit" value="{{titulo}}"[disabled]="!formProducto.form.valid" class="btn btn-success">
 </form>

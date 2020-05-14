@@ -4,12 +4,33 @@
 <div *ngIf='!productos'>
 	Cargando listado de productos....
 </div>
-<div *ngIf='productos'>
-	<ul>
-		<li *ngFor='let producto of productos'>
-			<strong>{{producto.nombre}}</strong>
-			<p>{{producto.precio}} COL</p>
-		</li>
-	</ul>
-	
-</div>
+	<div *ngIf='productos'>
+		<div class = "row">
+			<div class="col-lg-3" *ngFor='let producto of productos'>
+						<div class = "thumbnail" >
+							<div *ngIf ="producto.imagen" class="imagen_container">
+								<img src="http://localhost/curso-angular4-backend/uploads/{{producto.imagen}}" class="producto_imagen">
+							</div>
+							<div *ngIf = "!producto.imagen">
+								<div class="imagen_relleno"></div>								
+							</div>
+								<div class="caption">
+									<h5>{{producto.nombre}}</h5>
+									<p>{{producto.precio}} COL</p>
+									
+									<div class="botones" *ngIf="confirmado != producto.id">
+										<button  type="button"  [routerLink] = "['/producto', producto.id]"  class="btn btn-md btn btn-default">Ver</button>
+										<button type="button" [routerLink] = "['/editar-producto', producto.id]"class="btn btn-md btn btn-default">Editar</button>
+										<button type="button" (click)="borrarConfirm(producto.id)"class="btn btn-md btn btn-default">Borrar</button>
+									</div>
+									<div class="seguro" *ngIf="confirmado == producto.id">
+										<button  type="button" (click)="onDeleteProducto(producto.id)"class="btn btn-md btn btn-default">Si,  eliminarlo</button>
+
+										<button  type="button"  (click)="cancelarConfirm()"  class="btn btn-md btn btn-default">Cancelar</button>
+											
+										</div>
+							   </div>
+					   </div>
+		          </div>
+			</div>
+	</div>
